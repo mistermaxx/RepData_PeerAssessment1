@@ -13,6 +13,7 @@ Package denpendencies are called out, the working directory is set and the data 
   library(dplyr)
   library(ggplot2)
   library(lattice)
+  library(lubridate)
 
   setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
   
@@ -44,7 +45,7 @@ Using ggplot, a histogram of the data is created.
 
 ```
 
-# What is the average daily activity pattern?
+## What is the average daily activity pattern?
 Calculate the mean of steps per interval.
 ```{r, echo = TRUE, eval = TRUE}
   # calc mean of steps/interval
@@ -57,6 +58,16 @@ Graph the data using ggplot.
    graph.data <- ggplot(interval.steps.data, aes(interval, steps))
    graph.data + geom_line(color = "purple") + labs(x = "Interval", y = "Steps", title = "Steps Per Interval")
 ```
+
+Calculate which interval has the maximum number of steps
+```{r, echo = TRUE, eval = TRUE}
+  # max interval
+  max.interval.steps <- interval.steps.data[which.max(interval.steps.data$steps), 1]
+
+  print(seconds_to_period(5 * (max.interval.steps) * 60))
+```
+The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highest spike and the maximum number of steps.
+
 ## Imputing missing values
 
 
