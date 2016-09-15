@@ -14,7 +14,13 @@ The working directory is set and the data is read from the .csv file. The aggreg
   
   # read data from file
   activity.file.data <- read.csv("activity.csv")
-  
+
+```
+
+
+## What is mean total number of steps taken per day?
+
+```{r, echo = TRUE, eval = TRUE}
   # calc distrubtion of steps
   steps.data <- aggregate(steps ~ date, activity.file.data, sum)
 
@@ -25,14 +31,18 @@ Using ggplot, a histogram of the data is created.
   #create histogram with ggplot
   histogram.steps.data <- ggplot(data = steps.data, aes(steps.data$steps)) 
   histogram.steps.data + geom_histogram(color = "black", fill = "pink", bins = 10, binwidth = 6000) + labs(x = "Steps", y = "Count", title = "Distribution: Total Steps")
+  
+    # calc, report mean & median
+  mean.steps <- mean(steps.data$steps)
+  median.steps <- median(steps.data$steps)
+  
+  print(mean.steps)
+  print(median.steps)
 
 ```
 
-## What is mean total number of steps taken per day?
 
-
-
-## What is the average daily activity pattern?
+# What is the average daily activity pattern?
 
 
 
