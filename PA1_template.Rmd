@@ -7,7 +7,7 @@ output:
 
 
 ## Loading and preprocessing the data
-### The working director is set and the data is read from the .csv file.
+#### The working directory is set and the data is read from the .csv file.
 ```{r, echo = TRUE}
   setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
   
