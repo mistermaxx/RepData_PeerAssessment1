@@ -4,10 +4,11 @@ output:
   html_document:
     keep_md: true
 ---
-
+#Summary
+This document was produced as the first project for Coursera's Reproducible Research course.
 
 ## Loading and preprocessing the data
-#### The working directory is set and the data is read from the .csv file.
+The working directory is set and the data is read from the .csv file.
 ```{r, echo = TRUE}
   setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
   
