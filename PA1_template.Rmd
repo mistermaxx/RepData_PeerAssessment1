@@ -8,8 +8,12 @@ output:
 This document was produced as the first project for Coursera's Reproducible Research course.
 
 ## Loading and preprocessing the data
-The working directory is set and the data is read from the .csv file.
+Package denpendencies are called out, the working directory is set and the data is read from the .csv file.
 ```{r, echo = TRUE}
+  library(dplyr)
+  library(ggplot2)
+  library(lattice)
+
   setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
   
   # read data from file
@@ -40,10 +44,12 @@ Using ggplot, a histogram of the data is created.
 
 ```
 
-
 # What is the average daily activity pattern?
-
-
+Calculate the mean of steps per interval.
+```{r, echo = TRUE, eval = TRUE}
+  # calc mean of steps/interval
+  interval.steps.data <- aggregate(steps ~ interval, activity.file.data, mean)
+```
 
 ## Imputing missing values
 
