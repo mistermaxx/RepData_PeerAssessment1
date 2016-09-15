@@ -21,11 +21,10 @@ The working directory is set and the data is read from the .csv file. The aggreg
 ```
 
 Using ggplot, a histogram of the data is created.
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = TRUE}
   #create histogram with ggplot
   histogram.steps.data <- ggplot(data = steps.data, aes(steps.data$steps)) 
   histogram.steps.data + geom_histogram(color = "black", fill = "pink", bins = 10, binwidth = 6000) + labs(x = "Steps", y = "Count", title = "Distribution: Total Steps")
-
 
 ```
 
