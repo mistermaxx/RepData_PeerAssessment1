@@ -7,8 +7,13 @@ output:
 
 
 ## Loading and preprocessing the data
+```{r}
+  setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
+  
+  # read data from file
+  activity.file.data <- read.csv("activity.csv")
 
-
+```
 
 ## What is mean total number of steps taken per day?
 
