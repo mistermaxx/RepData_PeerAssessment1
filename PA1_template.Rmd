@@ -51,6 +51,12 @@ Calculate the mean of steps per interval.
   interval.steps.data <- aggregate(steps ~ interval, activity.file.data, mean)
 ```
 
+Graph the data using ggplot.
+```{r, echo = TRUE, eval = TRUE}
+  #plot graph using ggplot
+   graph.data <- ggplot(interval.steps.data, aes(interval, steps))
+   graph.data + geom_line(color = "purple") + labs(x = "Interval", y = "Steps", title = "Steps Per Interval")
+```
 ## Imputing missing values
 
 
