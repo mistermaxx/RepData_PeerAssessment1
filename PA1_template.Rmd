@@ -8,7 +8,7 @@ output:
 This document was produced as the first project for Coursera's Reproducible Research course.
 
 ## Loading and preprocessing the data
-The working directory is set and the data is read from the .csv file. The aggregate() function is used to summarize the data.
+The working directory is set and the data is read from the .csv file.
 ```{r, echo = TRUE}
   setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
   
@@ -19,11 +19,10 @@ The working directory is set and the data is read from the .csv file. The aggreg
 
 
 ## What is mean total number of steps taken per day?
-
+The aggregate() function is used to summarize the data.
 ```{r, echo = TRUE, eval = TRUE}
   # calc distrubtion of steps
   steps.data <- aggregate(steps ~ date, activity.file.data, sum)
-
 ```
 
 Using ggplot, a histogram of the data is created.
