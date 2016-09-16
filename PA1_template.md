@@ -59,9 +59,40 @@ The objective was to analyze the data contained in activity.csv and report the f
 
 ```r
   library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
   library(ggplot2)
   library(lattice)
   library(lubridate)
+```
+
+```
+## 
+## Attaching package: 'lubridate'
+```
+
+```
+## The following object is masked from 'package:base':
+## 
+##     date
 ```
 
 *Working directory is set and the data is read from the .csv file.*
@@ -90,7 +121,7 @@ The objective was to analyze the data contained in activity.csv and report the f
   histogram.steps.data + geom_histogram(color = "black", fill = "pink", bins = 10, binwidth = 6000) + labs(x = "Steps", y = "Count", title = "Distribution: Total Steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](unnamed-chunk-5-1.png)<!-- -->
 
 ```r
     # calc, report mean & median
