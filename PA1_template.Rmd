@@ -70,6 +70,22 @@ The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highes
 
 ## Imputing missing values
 
+```{r, echo = TRUE, eval = TRUE}
+  # missing values
+  incomplete.data <- sum(!complete.cases(activity.file.data))
+```
 
+Use the MICE package to fill in (impute) data (echo is turned off to avoid multiple MICE lines displaying)
+```{r, echo = FALSE, eval = TRUE}
+  imputed.data <- mice(data = activity.file.data, m = 5, method = "pmm", maxit = 20, seed = 500)
+```
+
+Create a histogram from the aggregated data.
+```{r, echo = TRUE, eval = TRUE}
+  imputed.data[as.character(imputed.data$date) == "2012-10-01", 1] <- 0
+  
+  imputed.steps.data <- aggregate(steps ~ date, imputed.data, sum)
+  hist(imputed.steps.data$steps, main = paste("Total Steps Each Day"), col = "purple", xlab = "Number of Steps")
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
