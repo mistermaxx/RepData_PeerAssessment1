@@ -1,20 +1,75 @@
 ---
-title: "Reproducible Research: Peer Assessment 1"
-output: 
+title: 'Reproducible Research: Peer Assessment 1'
+output:
   html_document:
-    keep_md: true
+    keep_md: yes
+  pdf_document: default
+  word_document: default
 ---
 #Summary
 This document was produced as the first project for Coursera's Reproducible Research course.
 
+Include the multiplot() function code
+```{r, , echo = TRUE, eval = TRUE}
+    # Multiple plot function
+    #
+    # ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+    # - cols:   Number of columns in layout
+    # - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+    #
+    # If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+    # then plot 1 will go in the upper left, 2 will go in the upper right, and
+    # 3 will go all the way across the bottom.
+    #
+    multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+      library(grid)
+      
+      # Make a list from the ... arguments and plotlist
+      plots <- c(list(...), plotlist)
+      
+      numPlots = length(plots)
+      
+      # If layout is NULL, then use 'cols' to determine layout
+      if (is.null(layout)) {
+        # Make the panel
+        # ncol: Number of columns of plots
+        # nrow: Number of rows needed, calculated from # of cols
+        layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                         ncol = cols, nrow = ceiling(numPlots/cols))
+      }
+      
+      if (numPlots==1) {
+        print(plots[[1]])
+        
+      } else {
+        # Set up the page
+        grid.newpage()
+        pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+        
+        # Make each plot, in the correct location
+        for (i in 1:numPlots) {
+          # Get the i,j matrix positions of the regions that contain this subplot
+          matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+          
+          print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                          layout.pos.col = matchidx$col))
+        }
+      }
+    }
+
+```
+
 ## Loading and preprocessing the data
-Package denpendencies are called out, the working directory is set and the data is read from the .csv file.
-```{r, echo = TRUE}
+Package dependencies are called out.
+```{r, echo = TRUE, eval = TRUE}
   library(dplyr)
   library(ggplot2)
   library(lattice)
   library(lubridate)
+```
 
+Working directory is set and the data is read from the .csv file.
+```{r, echo = TRUE, eval = TRUE}
   setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
   
   # read data from file
@@ -23,7 +78,7 @@ Package denpendencies are called out, the working directory is set and the data 
 ```
 
 
-## What is mean total number of steps taken per day?
+## What is the mean total number of steps taken per day?
 The aggregate() function is used to summarize the data.
 ```{r, echo = TRUE, eval = TRUE}
   # calc distrubtion of steps
@@ -44,6 +99,7 @@ Using ggplot, a histogram of the data is created.
   print(median.steps)
 
 ```
+The mean total steps per day is `r mean.steps`
 
 ## What is the average daily activity pattern?
 Calculate the mean of steps per interval.
@@ -75,9 +131,9 @@ The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highes
   incomplete.data <- sum(!complete.cases(activity.file.data))
 ```
 
-Use the MICE package to fill in (impute) data (echo is turned off to avoid multiple MICE lines displaying)
-```{r, echo = FALSE, eval = TRUE}
-  imputed.data <- mice(data = activity.file.data, m = 5, method = "pmm", maxit = 20, seed = 500)
+Fill in missing data.
+```{r, echo = TRUE, eval = TRUE}
+  imputed.data <- transform(activity.file.data, steps = ifelse(is.na(activity.file.data$steps), interval.steps.data$steps[match(activity.file.data$interval, interval.steps.data$interval)], activity.file.data$steps))
 ```
 
 Create a histogram from the aggregated data.
@@ -86,6 +142,57 @@ Create a histogram from the aggregated data.
   
   imputed.steps.data <- aggregate(steps ~ date, imputed.data, sum)
   hist(imputed.steps.data$steps, main = paste("Total Steps Each Day"), col = "purple", xlab = "Number of Steps")
+  
+  hist(steps.data$steps, main = paste("Total Steps Each Day"), col = "orange", xlab = "Number of Steps", add = TRUE)
+  legend("topright", c("Imputed", "Non-imputed"), col = c("purple", "orange"), lwd = 10)
 ```
 
+Calculate the mean for imputed values
+```{r, echo = TRUE, eval = TRUE}
+  # calc imputed mean & median
+  mean.imputed.steps <- mean(imputed.steps.data$steps)
+  median.imputed.steps <- median(imputed.steps.data$steps)
+  
+  # difference
+  mean.difference <- mean.imputed.steps - mean.steps
+  median.difference <- median.imputed.steps - median.steps
+  
+  total.difference <- sum(imputed.steps.data$steps) - sum(steps.data$steps)
+  
+  print(total.difference)
+```
+
+Imputing values to the dataset increases the median values.
+
 ## Are there differences in activity patterns between weekdays and weekends?
+Calculate the difference in activity between weekdays and weekends
+```{r, echo = TRUE, eval = TRUE}
+  weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+  
+  imputed.data$weekday = as.factor(ifelse(is.element(weekdays(as.Date(imputed.data$date)), weekdays), "Weekday", "Weekend"))
+  
+  #aggregate
+  imputed.steps.interval.data <- aggregate(steps ~ interval + weekday, imputed.data, mean)
+  
+   # subset and separate data by weekday, weekend days
+  weekday.data <- subset(imputed.steps.interval.data, imputed.steps.interval.data$weekday == "Weekday")
+  
+  # calc weekday mean
+  mean.weekday <- mean(weekday.data$steps)
+  
+  # plot weekday graph
+  plot.weekday <- ggplot(weekday.data, aes(interval, steps))
+  graph1 <- plot.weekday + geom_hline(yintercept = mean.weekday, color = "red") + geom_line(color = "turquoise2") + coord_cartesian(xlim = c(-0, 2500)) + labs(x = "Interval", y = "Steps", title = "Steps Per Interval: Weekdays")
+  
+  # plot weekend graph
+  weekend.data <- subset(imputed.steps.interval.data, imputed.steps.interval.data$weekday == "Weekend")
+  mean.weekend <- mean(weekend.data$steps)
+  plot.weekend <- ggplot(weekend.data, aes(interval, steps))
+  graph2 <- plot.weekend + geom_hline(yintercept = mean.weekend, color = "red") + geom_line(color = "maroon4") + coord_cartesian(xlim = c(-0, 2500)) + labs(x = "Interval", y = "Steps", title = "Steps Per Interval: Weekend")
+  
+  
+  multiplot(graph1, graph2)
+  
+```
+
+The graphs show that on average, activity is higher on the weekend than the weekdays.
