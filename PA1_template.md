@@ -121,7 +121,7 @@ The objective was to analyze the data contained in activity.csv and report the f
   histogram.steps.data + geom_histogram(color = "black", fill = "pink", bins = 10, binwidth = 6000) + labs(x = "Steps", y = "Count", title = "Distribution: Total Steps")
 ```
 
-![](unnamed-chunk-5-1.png)<!-- -->
+![](unnamed-chunk-5-1.png)
 
 ```r
     # calc, report mean & median
@@ -160,7 +160,7 @@ The objective was to analyze the data contained in activity.csv and report the f
    graph.data + geom_line(color = "purple") + labs(x = "Interval", y = "Steps", title = "Steps Per Interval")
 ```
 
-![](unnamed-chunk-7-1.png)<!-- -->
+![](unnamed-chunk-7-1.png)
 
 *Calculate which interval has the maximum number of steps*
 
@@ -202,7 +202,7 @@ The objective was to analyze the data contained in activity.csv and report the f
   legend("topright", c("Imputed", "Non-imputed"), col = c("purple", "orange"), lwd = 10)
 ```
 
-![](unnamed-chunk-11-1.png)<!-- -->
+![](unnamed-chunk-11-1.png)
 
 *Calculate the mean for imputed values*
 
@@ -257,6 +257,6 @@ The objective was to analyze the data contained in activity.csv and report the f
   multiplot(graph1, graph2)
 ```
 
-![](unnamed-chunk-13-1.png)<!-- -->
+![](unnamed-chunk-13-1.png)
 
 *The graphs show that on average, activity is higher on the weekend than the weekdays.*
