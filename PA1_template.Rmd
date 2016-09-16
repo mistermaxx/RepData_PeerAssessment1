@@ -9,7 +9,9 @@ output:
 #Summary
 This document was produced as the first project for Coursera's Reproducible Research course.
 
-Include the multiplot() function code
+The objective was to analyze the data contained in activity.csv and report the findings. Both the code and results have included in this R markdown document for peer review. The author's running commentary is included in italics.
+
+*Include the multiplot() function code*
 ```{r, , echo = TRUE, eval = TRUE}
     # Multiple plot function
     #
@@ -60,7 +62,7 @@ Include the multiplot() function code
 ```
 
 ## Loading and preprocessing the data
-Package dependencies are called out.
+*Package dependencies are called out.*
 ```{r, echo = TRUE, eval = TRUE}
   library(dplyr)
   library(ggplot2)
@@ -68,7 +70,7 @@ Package dependencies are called out.
   library(lubridate)
 ```
 
-Working directory is set and the data is read from the .csv file.
+*Working directory is set and the data is read from the .csv file.*
 ```{r, echo = TRUE, eval = TRUE}
   setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
   
@@ -79,13 +81,13 @@ Working directory is set and the data is read from the .csv file.
 
 
 ## What is the mean total number of steps taken per day?
-The aggregate() function is used to summarize the data.
+*The aggregate() function is used to summarize the data.*
 ```{r, echo = TRUE, eval = TRUE}
   # calc distrubtion of steps
   steps.data <- aggregate(steps ~ date, activity.file.data, sum)
 ```
 
-Using ggplot, a histogram of the data is created.
+*Using ggplot, a histogram of the data is created.*
 ```{r, echo = TRUE, eval = TRUE}
   #create histogram with ggplot
   histogram.steps.data <- ggplot(data = steps.data, aes(steps.data$steps)) 
@@ -99,30 +101,30 @@ Using ggplot, a histogram of the data is created.
   print(median.steps)
 
 ```
-The mean total steps per day is `r mean.steps`
+*The mean total steps per day is `r mean.steps`*
 
 ## What is the average daily activity pattern?
-Calculate the mean of steps per interval.
+*Calculate the mean of steps per interval.*
 ```{r, echo = TRUE, eval = TRUE}
   # calc mean of steps/interval
   interval.steps.data <- aggregate(steps ~ interval, activity.file.data, mean)
 ```
 
-Graph the data using ggplot.
+*Graph the data using ggplot.*
 ```{r, echo = TRUE, eval = TRUE}
   #plot graph using ggplot
    graph.data <- ggplot(interval.steps.data, aes(interval, steps))
    graph.data + geom_line(color = "purple") + labs(x = "Interval", y = "Steps", title = "Steps Per Interval")
 ```
 
-Calculate which interval has the maximum number of steps
+*Calculate which interval has the maximum number of steps*
 ```{r, echo = TRUE, eval = TRUE}
   # max interval
   max.interval.steps <- interval.steps.data[which.max(interval.steps.data$steps), 1]
 
   print(seconds_to_period(5 * (max.interval.steps) * 60))
 ```
-The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highest spike and the maximum number of steps.
+*The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highest spike and the maximum number of steps.*
 
 ## Imputing missing values
 
@@ -131,12 +133,12 @@ The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highes
   incomplete.data <- sum(!complete.cases(activity.file.data))
 ```
 
-Fill in missing data.
+*Fill in missing data.*
 ```{r, echo = TRUE, eval = TRUE}
   imputed.data <- transform(activity.file.data, steps = ifelse(is.na(activity.file.data$steps), interval.steps.data$steps[match(activity.file.data$interval, interval.steps.data$interval)], activity.file.data$steps))
 ```
 
-Create a histogram from the aggregated data.
+*Create a histogram from the aggregated data.*
 ```{r, echo = TRUE, eval = TRUE}
   imputed.data[as.character(imputed.data$date) == "2012-10-01", 1] <- 0
   
@@ -147,7 +149,7 @@ Create a histogram from the aggregated data.
   legend("topright", c("Imputed", "Non-imputed"), col = c("purple", "orange"), lwd = 10)
 ```
 
-Calculate the mean for imputed values
+*Calculate the mean for imputed values*
 ```{r, echo = TRUE, eval = TRUE}
   # calc imputed mean & median
   mean.imputed.steps <- mean(imputed.steps.data$steps)
@@ -162,10 +164,10 @@ Calculate the mean for imputed values
   print(total.difference)
 ```
 
-Imputing values to the dataset increases the median values.
+*Imputing values to the dataset increases the median values.*
 
 ## Are there differences in activity patterns between weekdays and weekends?
-Calculate the difference in activity between weekdays and weekends
+*Calculate the difference in activity between weekdays and weekends*
 ```{r, echo = TRUE, eval = TRUE}
   weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
   
@@ -195,4 +197,4 @@ Calculate the difference in activity between weekdays and weekends
   
 ```
 
-The graphs show that on average, activity is higher on the weekend than the weekdays.
+*The graphs show that on average, activity is higher on the weekend than the weekdays.*

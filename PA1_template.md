@@ -2,7 +2,9 @@
 #Summary
 This document was produced as the first project for Coursera's Reproducible Research course.
 
-Include the multiplot() function code
+The objective was to analyze the data contained in activity.csv and report the findings. Both the code and results have included in this R markdown document for peer review. The author's running commentary is included in italics.
+
+*Include the multiplot() function code*
 
 ```r
     # Multiple plot function
@@ -53,7 +55,7 @@ Include the multiplot() function code
 ```
 
 ## Loading and preprocessing the data
-Package dependencies are called out.
+*Package dependencies are called out.*
 
 ```r
   library(dplyr)
@@ -93,7 +95,7 @@ Package dependencies are called out.
 ##     date
 ```
 
-Working directory is set and the data is read from the .csv file.
+*Working directory is set and the data is read from the .csv file.*
 
 ```r
   setwd("/Users/mistermaxx/Documents/work/personal/Coursera/Repro_Res/")
@@ -104,14 +106,14 @@ Working directory is set and the data is read from the .csv file.
 
 
 ## What is the mean total number of steps taken per day?
-The aggregate() function is used to summarize the data.
+*The aggregate() function is used to summarize the data.*
 
 ```r
   # calc distrubtion of steps
   steps.data <- aggregate(steps ~ date, activity.file.data, sum)
 ```
 
-Using ggplot, a histogram of the data is created.
+*Using ggplot, a histogram of the data is created.*
 
 ```r
   #create histogram with ggplot
@@ -140,17 +142,17 @@ Using ggplot, a histogram of the data is created.
 ```
 ## [1] 10765
 ```
-The mean total steps per day is 1.0766189\times 10^{4}
+*The mean total steps per day is 1.0766189\times 10^{4}*
 
 ## What is the average daily activity pattern?
-Calculate the mean of steps per interval.
+*Calculate the mean of steps per interval.*
 
 ```r
   # calc mean of steps/interval
   interval.steps.data <- aggregate(steps ~ interval, activity.file.data, mean)
 ```
 
-Graph the data using ggplot.
+*Graph the data using ggplot.*
 
 ```r
   #plot graph using ggplot
@@ -160,7 +162,7 @@ Graph the data using ggplot.
 
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
-Calculate which interval has the maximum number of steps
+*Calculate which interval has the maximum number of steps*
 
 ```r
   # max interval
@@ -172,7 +174,7 @@ Calculate which interval has the maximum number of steps
 ```
 ## [1] "2d 21H 35M 0S"
 ```
-The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highest spike and the maximum number of steps.
+*The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highest spike and the maximum number of steps.*
 
 ## Imputing missing values
 
@@ -182,13 +184,13 @@ The interval at Wednesday, 9:35 pm (2 days, 21 hours, 35 minutes) has the highes
   incomplete.data <- sum(!complete.cases(activity.file.data))
 ```
 
-Fill in missing data.
+*Fill in missing data.*
 
 ```r
   imputed.data <- transform(activity.file.data, steps = ifelse(is.na(activity.file.data$steps), interval.steps.data$steps[match(activity.file.data$interval, interval.steps.data$interval)], activity.file.data$steps))
 ```
 
-Create a histogram from the aggregated data.
+*Create a histogram from the aggregated data.*
 
 ```r
   imputed.data[as.character(imputed.data$date) == "2012-10-01", 1] <- 0
@@ -202,7 +204,7 @@ Create a histogram from the aggregated data.
 
 ![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
-Calculate the mean for imputed values
+*Calculate the mean for imputed values*
 
 ```r
   # calc imputed mean & median
@@ -222,10 +224,10 @@ Calculate the mean for imputed values
 ## [1] 75363.32
 ```
 
-Imputing values to the dataset increases the median values.
+*Imputing values to the dataset increases the median values.*
 
 ## Are there differences in activity patterns between weekdays and weekends?
-Calculate the difference in activity between weekdays and weekends
+*Calculate the difference in activity between weekdays and weekends*
 
 ```r
   weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
@@ -257,4 +259,4 @@ Calculate the difference in activity between weekdays and weekends
 
 ![](PA1_template_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
 
-The graphs show that on average, activity is higher on the weekend than the weekdays.
+*The graphs show that on average, activity is higher on the weekend than the weekdays.*
