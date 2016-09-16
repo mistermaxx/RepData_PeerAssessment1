@@ -59,40 +59,9 @@ The objective was to analyze the data contained in activity.csv and report the f
 
 ```r
   library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
   library(ggplot2)
   library(lattice)
   library(lubridate)
-```
-
-```
-## 
-## Attaching package: 'lubridate'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     date
 ```
 
 *Working directory is set and the data is read from the .csv file.*
